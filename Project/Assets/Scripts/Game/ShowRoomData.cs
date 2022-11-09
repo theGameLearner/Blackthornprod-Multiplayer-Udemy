@@ -11,4 +11,4 @@ public class ShowRoomData : MonoBehaviour
 	{
 		displayTxt.text = PhotonCommunicator.GetCurrentRoomName();
 	}
-}
+} 
