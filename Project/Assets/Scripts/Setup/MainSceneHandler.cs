@@ -35,7 +35,7 @@ public class MainSceneHandler : MonoBehaviour
 	void OnRoomJoined()
 	{
 		Debug.Log($"Joined a new room");
-		SceneLoader.LoadScene(SceneData.Room);
+		SceneLoader.LoadScene(SceneData.Room, true);
 	}
 	private void OnDisable()
 	{

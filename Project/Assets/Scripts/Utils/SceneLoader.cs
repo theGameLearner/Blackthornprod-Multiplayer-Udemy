@@ -13,7 +13,7 @@ public class SceneLoader : MonoBehaviour
 		instance = this;
 		SceneManager.sceneLoaded += OnSceneLoadedEvent;
 	}
-	public static void LoadScene(int index, float delay = 0)
+	private static void LoadScene(int index, float delay = 0)
 	{
 		if (loadingCoroutine != null)
 		{
@@ -22,25 +22,36 @@ public class SceneLoader : MonoBehaviour
 		loadingCoroutine = instance.StartCoroutine(LoadingCoroutine(()=> SceneManager.LoadScene(index), delay));
 	}
 
+	private static void LoadPhotonScene(int index, float delay = 0)
+	{
+		if (loadingCoroutine != null)
+		{
+			instance.StopCoroutine(loadingCoroutine);
+		}
+		loadingCoroutine = instance.StartCoroutine(LoadingCoroutine(() => PhotonCommunicator.LoadLevel(index), delay));
+	}
+
 	private static IEnumerator LoadingCoroutine(Action callBack, float delay)
 	{
 		yield return new WaitForSeconds(delay);
 		callBack();
 	}
 
-	public static void LoadScene(string sceneName, float delay = 0)
-	{
-		if(loadingCoroutine != null)
-		{
-			instance.StopCoroutine(loadingCoroutine);
-		}
-		loadingCoroutine = instance.StartCoroutine(LoadingCoroutine(() => SceneManager.LoadScene(sceneName), delay));
-		
-	}
-
 	public static void LoadScene(SceneData sceneEnum, float delay = 0)
 	{
 		LoadScene((int)sceneEnum, delay);
+	}
+
+	public static void LoadScene(SceneData sceneEnum, bool loadUsingPhoton, float delay = 0)
+	{
+		if (loadUsingPhoton)
+		{
+			LoadPhotonScene((int)sceneEnum, delay);
+		}
+		else
+		{
+			LoadScene((int)sceneEnum, delay);
+		}
 	}
 
 	public static SceneData GetSceneName()

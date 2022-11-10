@@ -69,7 +69,14 @@ public class PhotonCommunicator : MonoBehaviourPunCallbacks
 
 	public static GameObject Instantiate(string pName, Vector2 pos, Quaternion rot)
 	{
+		Debug.LogError($"Instantiating a new Object");
 		return PhotonNetwork.Instantiate(pName, pos, rot);
+	}
+
+	public static void LoadLevel(int buildIndex)
+	{
+		PhotonNetwork.AutomaticallySyncScene = true;
+		PhotonNetwork.LoadLevel(buildIndex);
 	}
 
 	#endregion CallsForPhoton
